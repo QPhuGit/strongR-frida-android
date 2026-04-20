@@ -123,14 +123,14 @@ jobs:
         CUSTOM_AGENT="lib_sys_core.so"
         CUSTOM_PORT="44211"
 
-        find . -type f -name "*.c" -o -name "*.vala" -o -name "*.js" | xargs sed -i "s/frida-agent-/$CUSTOM_AGENT-/g" || true
-        find . -type f -name "*.c" -o -name "*.vala" -o -name "*.js" | xargs sed -i "s/frida-agent.so/$CUSTOM_AGENT/g" || true
-        find . -type f -name "*.c" -o -name "*.vala" | xargs sed -i "s/frida-server/$CUSTOM_NAME/g" || true
+        find . -type f \( -name "*.c" -o -name "*.vala" -o -name "*.js" \) -print0 | xargs -0 sed -i "s/frida-agent-/$CUSTOM_AGENT-/g" || true
+        find . -type f \( -name "*.c" -o -name "*.vala" -o -name "*.js" \) -print0 | xargs -0 sed -i "s/frida-agent.so/$CUSTOM_AGENT/g" || true
+        find . -type f \( -name "*.c" -o -name "*.vala" -o -name "*.js" \) -print0 | xargs -0 sed -i "s/frida-server/$CUSTOM_NAME/g" || true
 
         
         echo "[+] Patching complete. Starting build..."
         
-        ARCHES="android-arm64 android-x86_64"
+        ARCHES="android-x86_64"
         for ARCH in $ARCHES
         do
           mkdir build-$ARCH
