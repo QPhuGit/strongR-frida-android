@@ -129,16 +129,16 @@ jobs:
 
         
         echo "[+] Patching complete. Starting build..."
-        
-        ARCHES="android-x86_64"
-        for ARCH in $ARCHES
-        do
-          mkdir build-$ARCH
-          cd build-$ARCH
-          ../frida/configure --host=$ARCH
-          make
-          cd ..
-        done
+        make core-android-x86_64
+        # ARCHES="android-x86_64"
+        # for ARCH in $ARCHES
+        # do
+        #   mkdir build-$ARCH
+        #   cd build-$ARCH
+        #   ../frida/configure --host=$ARCH
+        #   make
+        #   cd ..
+        # done
         
 
     - name: Check release version
