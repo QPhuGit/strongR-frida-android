@@ -115,6 +115,7 @@ jobs:
         export ANDROID_NDK_ROOT=${{ steps.setup-ndk.outputs.ndk-path }}
         git clone --recurse-submodules https://github.com/frida/frida
         cd frida
+        FRIDA_ROOT=$(pwd)
         
         echo "[*] Applying Custom Stealth Patches..."
         
@@ -129,16 +130,24 @@ jobs:
 
         
         echo "[+] Patching complete. Starting build..."
-        make core-android-x86_64
-        # ARCHES="android-x86_64"
-        # for ARCH in $ARCHES
-        # do
-        #   mkdir build-$ARCH
-        #   cd build-$ARCH
-        #   ../frida/configure --host=$ARCH
-        #   make
-        #   cd ..
-        # done
+        mkdir build-android-x86_64
+        cd build-android-x86_64
+        
+        if [ -f "$FRIDA_ROOT/configure" ]; then
+            echo "[*] Found standard configure wrapper."
+            $FRIDA_ROOT/configure --host=android-x86_64
+        else
+            echo "[*] configure wrapper missing. Using Python meson_configure engine directly."
+            python3 $FRIDA_ROOT/releng/meson_configure.py --host=android-x86_64
+        fi
+        make
+        
+    - name: Upload Custom Stealth Server
+      uses: actions/upload-artifact@v4
+      with:
+          name: custom-stealth-server-x86_64
+          path: frida/build-android-x86_64/**/server/*
+  
         
 
     - name: Check release version
