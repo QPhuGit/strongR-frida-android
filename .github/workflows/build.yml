@@ -118,7 +118,6 @@ jobs:
         
         echo "[*] Applying Custom Stealth Patches..."
         
-        # 3. Define your unique stealth strings here
         # Change these to whatever you want!
         CUSTOM_NAME="sys_daemon_v2"
         CUSTOM_AGENT="lib_sys_core.so"
@@ -126,13 +125,8 @@ jobs:
 
         find . -type f -name "*.c" -o -name "*.vala" -o -name "*.js" | xargs sed -i "s/frida-agent-/$CUSTOM_AGENT-/g" || true
         find . -type f -name "*.c" -o -name "*.vala" -o -name "*.js" | xargs sed -i "s/frida-agent.so/$CUSTOM_AGENT/g" || true
-
         find . -type f -name "*.c" -o -name "*.vala" | xargs sed -i "s/frida-server/$CUSTOM_NAME/g" || true
-        find . -type f -name "*.c" -o -name "*.vala" | xargs sed -i "s/27042/$CUSTOM_PORT/g" || true
 
-        find . -type f -name "*.c" -o -name "*.vala" | xargs sed -i "s/gum-js-loop/worker-loop/g" || true
-        find . -type f -name "*.c" -o -name "*.vala" | xargs sed -i "s/gmain/sys_main/g" || true
-        find . -type f -name "*.c" -o -name "*.vala" | xargs sed -i "s/re.frida.server/com.android.sys/g" || true
         
         echo "[+] Patching complete. Starting build..."
         
